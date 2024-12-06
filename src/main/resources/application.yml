@@ -1,9 +1,9 @@
 spring:
   profiles:
     active: dev
-logging:
-  level:
-    com:
-      shad:
-        journalApp: DEBUG
+#logging:
+#  level:
+#    com:
+#      shad:
+#        journalApp: DEBUG
 
