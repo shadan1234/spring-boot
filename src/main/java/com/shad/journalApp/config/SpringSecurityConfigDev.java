@@ -49,7 +49,6 @@ public class SpringSecurityConfigDev {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
-
                                 .requestMatchers("/journal/**","/user/**").authenticated()
                                 .requestMatchers("/admin/**").hasAnyRole("ADMIN")
                                 .anyRequest().permitAll())

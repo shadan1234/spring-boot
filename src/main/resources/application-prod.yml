@@ -14,3 +14,8 @@ server:
   port: 8085
   servlet:
     context-path: /journal
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /api-docs

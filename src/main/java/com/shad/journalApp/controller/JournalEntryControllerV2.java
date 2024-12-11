@@ -4,6 +4,8 @@ import com.shad.journalApp.entity.JournalEntry;
 import com.shad.journalApp.entity.User;
 import com.shad.journalApp.services.JournalEntryService;
 import com.shad.journalApp.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("journal")
+@Tag(name="Journal API's")
 public class JournalEntryControllerV2 {
 
     @Autowired
@@ -26,6 +29,7 @@ public class JournalEntryControllerV2 {
     private UserService userService;
 
     @GetMapping()
+    @Operation(summary = "Get all journal entries of a user")
     public ResponseEntity<List<JournalEntry>> getAllJournalEntriesByUserName() {
         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
@@ -55,15 +59,16 @@ public class JournalEntryControllerV2 {
     }
 
     @GetMapping("/id/{myid}")
-    public ResponseEntity<JournalEntry> getEntryById(@PathVariable ObjectId myid) {
+    public ResponseEntity<JournalEntry> getEntryById(@PathVariable String myid) {
+        ObjectId objectId=new ObjectId(myid);
         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
         User user= userService.findUserByUsername(userName);
-        List<JournalEntry> collect=user.getJournalEntryList().stream().filter(x->x.getId().equals(myid)).collect(Collectors.toList());
+        List<JournalEntry> collect=user.getJournalEntryList().stream().filter(x->x.getId().equals(objectId)).collect(Collectors.toList());
         if(!collect.isEmpty()) {
 
 
-            JournalEntry journalEntry = journalEntryService.getJournalEntryById(myid);
+            JournalEntry journalEntry = journalEntryService.getJournalEntryById(objectId);
             if (journalEntry != null) {
                 return new ResponseEntity<>(journalEntry, HttpStatus.ACCEPTED);
             }
